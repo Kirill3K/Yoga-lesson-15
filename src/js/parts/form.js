@@ -11,7 +11,7 @@ function form() {
 
         statusMessage.classList.add('status');
     
-    function sendForm(mainForm){
+    let sendForm = (mainForm) => {
         mainForm.addEventListener('submit', function(event) {
             let input = this.getElementsByTagName('input');
             event.preventDefault();
@@ -19,7 +19,7 @@ function form() {
 
             let formData = new FormData(mainForm);
 
-			function postData(data) {
+			let postData = (data) => {
 
 				return new Promise(function(resolve, reject) {
 					let request = new XMLHttpRequest();
@@ -50,7 +50,7 @@ function form() {
 
             } // Конец postData
             
-            function clearInput() {
+            let clearInput = () => {
                 for (let i = 0; i < input.length; i++) {
                     input[i].value = '';
             }
@@ -73,7 +73,9 @@ function form() {
 
     validationPhone.forEach((item) => {
         item.addEventListener('input', function() {
-            item.value = item.value.replace (/[^\+\d]/g, '');
+            if (!(/^\+?[()\d -]*$/.test(this.value))) {
+                this.value = this.value.slice(0, -1);
+            }
         });
     });
 }

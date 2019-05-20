@@ -1,5 +1,5 @@
 function timer() {
-    let deadline = '2019-05-20';
+    let deadline = '2019-05-30';
 
     let getTimeRemaining = (endtime) => {
         let t = Date.parse(endtime) - Date.parse(new Date()),
@@ -16,7 +16,7 @@ function timer() {
         };
     };
 
-    function setClock(id, endtime) { 
+    let setClock = (id, endtime) => { 
         let timer = document.getElementById(id),
             hours = timer.querySelector('.hours'),
             minutes = timer.querySelector('.minutes'),

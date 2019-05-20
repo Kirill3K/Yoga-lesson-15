@@ -108,7 +108,7 @@ function calc() {
         personsSum = +this.value; 
         total = (daysSum * personsSum)*4000*place.options[place.selectedIndex].value; 
 
-        if(restDays.value == '' || restDays.value == 0) { 
+        if(restDays.value == '' || restDays.value == '0' || checkZero(this.value)) { 
             totalValue.innerHTML = 0;
         } else {
             totalValue.innerHTML = total;
@@ -118,7 +118,7 @@ function calc() {
         daysSum = +this.value; 
         total = (daysSum * personsSum)*4000*place.options[place.selectedIndex].value; 
 
-        if(persons.value == '' || persons.value == 0) { 
+        if(restDays.value == '' || restDays.value == '0' || checkZero(this.value)) { 
             totalValue.innerHTML = 0;
         } else {
             totalValue.innerHTML = total;
@@ -126,7 +126,7 @@ function calc() {
     });
 
     place.addEventListener('change', function() {
-        if (restDays.value == '' || persons.value == 0) {
+        if (restDays.value == '' || persons.value == '0') {
             total.value.innerHTML = 0;
         } else {
             let a = total;
@@ -138,9 +138,13 @@ function calc() {
 
     validationNumber.forEach((item) => {
         item.addEventListener('input', function() {
-            item.value = item.value.replace (/[^\d]/g, '');
+            this.value = this.value.replace (/[^\d]/g, '');
         });
     });
+
+    function checkZero(input) {
+        return input.slice(0,1) == '0';
+    } 
 }
 
 module.exports = calc;
@@ -167,7 +171,7 @@ function form() {
 
         statusMessage.classList.add('status');
     
-    function sendForm(mainForm){
+    let sendForm = (mainForm) => {
         mainForm.addEventListener('submit', function(event) {
             let input = this.getElementsByTagName('input');
             event.preventDefault();
@@ -175,7 +179,7 @@ function form() {
 
             let formData = new FormData(mainForm);
 
-			function postData(data) {
+			let postData = (data) => {
 
 				return new Promise(function(resolve, reject) {
 					let request = new XMLHttpRequest();
@@ -206,7 +210,7 @@ function form() {
 
             } // Конец postData
             
-            function clearInput() {
+            let clearInput = () => {
                 for (let i = 0; i < input.length; i++) {
                     input[i].value = '';
             }
@@ -229,7 +233,9 @@ function form() {
 
     validationPhone.forEach((item) => {
         item.addEventListener('input', function() {
-            item.value = item.value.replace (/[^\+\d]/g, '');
+            if (!(/^\+?[()\d -]*$/.test(this.value))) {
+                this.value = this.value.slice(0, -1);
+            }
         });
     });
 }
@@ -310,22 +316,22 @@ function slider() {
         dots[slideIndex - 1].classList.add('dot-active');
     }
 
-    function plusSlides(n) {
+    let plusSlides = (n) => {
         showSlides(slideIndex += n);
     }
-    function currentSlide(n) {
+    let currentSlide = (n) => {
         showSlides(slideIndex = n);
     }
 
-    prev.addEventListener('click', function() {
+    prev.addEventListener('click', () => {
         plusSlides(-1);
     });
 
-    next.addEventListener('click', function() {
+    next.addEventListener('click', () => {
         plusSlides(1);
     });
 
-    dotsWrap.addEventListener('click', function(event) {
+    dotsWrap.addEventListener('click', (event) => {
         for (let i = 0; i < dots.length + 1; i++) {
             if (event.target.classList.contains('dot') && event.target == dots[i-1]) {
                 currentSlide(i);
@@ -350,7 +356,7 @@ function tabs() {
         info = document.querySelector('.info-header'),
         tabContent = document.querySelectorAll('.info-tabcontent');
 
-    function hideTabContent(a) {
+    let hideTabContent = (a) => {
         for (let i = a; i < tabContent.length; i++) {
             tabContent[i].classList.remove('show');
             tabContent[i].classList.add('hide');
@@ -359,7 +365,7 @@ function tabs() {
 
     hideTabContent(1);
 
-    function showTabContent(b) {
+    let showTabContent = (b) => {
         if (tabContent[b].classList.contains('hide')) {
             tabContent[b].classList.remove('hide');
             tabContent[b].classList.add('show');
@@ -392,7 +398,7 @@ module.exports = tabs;
 /***/ (function(module, exports) {
 
 function timer() {
-    let deadline = '2019-05-20';
+    let deadline = '2019-05-30';
 
     let getTimeRemaining = (endtime) => {
         let t = Date.parse(endtime) - Date.parse(new Date()),
@@ -409,7 +415,7 @@ function timer() {
         };
     };
 
-    function setClock(id, endtime) { 
+    let setClock = (id, endtime) => { 
         let timer = document.getElementById(id),
             hours = timer.querySelector('.hours'),
             minutes = timer.querySelector('.minutes'),

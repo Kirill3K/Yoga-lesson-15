@@ -13,7 +13,7 @@ function calc() {
         personsSum = +this.value; 
         total = (daysSum * personsSum)*4000*place.options[place.selectedIndex].value; 
 
-        if(restDays.value == '' || restDays.value == 0) { 
+        if(restDays.value == '' || restDays.value == '0' || checkZero(this.value)) { 
             totalValue.innerHTML = 0;
         } else {
             totalValue.innerHTML = total;
@@ -23,7 +23,7 @@ function calc() {
         daysSum = +this.value; 
         total = (daysSum * personsSum)*4000*place.options[place.selectedIndex].value; 
 
-        if(persons.value == '' || persons.value == 0) { 
+        if(restDays.value == '' || restDays.value == '0' || checkZero(this.value)) { 
             totalValue.innerHTML = 0;
         } else {
             totalValue.innerHTML = total;
@@ -31,7 +31,7 @@ function calc() {
     });
 
     place.addEventListener('change', function() {
-        if (restDays.value == '' || persons.value == 0) {
+        if (restDays.value == '' || persons.value == '0') {
             total.value.innerHTML = 0;
         } else {
             let a = total;
@@ -43,9 +43,13 @@ function calc() {
 
     validationNumber.forEach((item) => {
         item.addEventListener('input', function() {
-            item.value = item.value.replace (/[^\d]/g, '');
+            this.value = this.value.replace (/[^\d]/g, '');
         });
     });
+
+    function checkZero(input) {
+        return input.slice(0,1) == '0';
+    } 
 }
 
 module.exports = calc;
